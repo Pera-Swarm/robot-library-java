@@ -16,7 +16,9 @@ public class ColorSensor extends AbstractSensor {
 
     private final static int MQTT_TIMEOUT = 1000;
 
-    private enum mqttTopic {COLOR_IN, COLOR_LOOK}
+    private enum mqttTopic {
+        COLOR_IN, COLOR_LOOK
+    }
 
     private HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
     private boolean col_lock = false;
@@ -27,7 +29,7 @@ public class ColorSensor extends AbstractSensor {
         super(robot, m);
 
         try {
-            color = new RGBColorType(0,0,0);
+            color = new RGBColorType(0, 0, 0);
         } catch (RGBColorException e) {
             e.printStackTrace();
         }
@@ -36,8 +38,8 @@ public class ColorSensor extends AbstractSensor {
     }
 
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic);          // Put to the queue
-        robotMqttClient.subscribe(topic);   // Subscribe through MqttHandler
+        topicsSub.put(key, topic); // Put to the queue
+        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
     @Override
@@ -51,9 +53,9 @@ public class ColorSensor extends AbstractSensor {
             color.setColor(msg);
             col_lock = false;
 
-//        } else if (topic.equals(topicsSub.get(mqttTopic.COLOR_LOOK))) {
-//            // sensor/color/{id}/?
-//            System.out.println("Received: " + topic + "> " + color.toString());
+            // } else if (topic.equals(topicsSub.get(mqttTopic.COLOR_LOOK))) {
+            // // sensor/color/{id}/?
+            // System.out.println("Received: " + topic + "> " + color.toString());
 
         } else {
             System.out.println("Received (unknown): " + topic + "> " + color.toString());
@@ -65,9 +67,9 @@ public class ColorSensor extends AbstractSensor {
         // Prepare the message
         JSONObject msg = new JSONObject();
         msg.put("id", robotId);
-        msg.put("reality", "M");    // inform the requesting reality
+        msg.put("reality", "M"); // inform the requesting reality
 
-        col_lock = true;            // Acquire the color sensor lock
+        col_lock = true; // Acquire the color sensor lock
 
         robotMqttClient.publish("sensor/color", msg.toJSONString());
         robot.delay(250);

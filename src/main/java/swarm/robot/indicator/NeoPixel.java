@@ -1,7 +1,6 @@
 package swarm.robot.indicator;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import swarm.mqtt.RobotMqttClient;
 import swarm.mqtt.MqttMsg;
@@ -13,7 +12,9 @@ import java.util.HashMap;
 
 public class NeoPixel extends AbstractIndicator {
 
-    private enum mqttTopic {NEOPIXEL_IN}
+    private enum mqttTopic {
+        NEOPIXEL_IN
+    }
 
     private final HashMap<NeoPixel.mqttTopic, String> topicsSub = new HashMap<NeoPixel.mqttTopic, String>();
 
@@ -25,8 +26,8 @@ public class NeoPixel extends AbstractIndicator {
     }
 
     protected void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic);          // Put to the queue
-        robotMqttClient.subscribe(topic);   // Subscribe through MqttHandler
+        topicsSub.put(key, topic); // Put to the queue
+        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
     @Override
@@ -35,7 +36,7 @@ public class NeoPixel extends AbstractIndicator {
 
         if (topic.equals(topicsSub.get(mqttTopic.NEOPIXEL_IN))) {
             // output/neopixel/{id}
-            //System.out.println("Received: " + topic + "> " + msg);
+            // System.out.println("Received: " + topic + "> " + msg);
 
             String[] colors = msg.split(" ");
             R = Integer.parseInt(colors[0]);

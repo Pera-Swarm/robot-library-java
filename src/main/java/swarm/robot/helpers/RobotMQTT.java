@@ -14,7 +14,9 @@ public class RobotMQTT {
     protected int robotId;
     protected char reality;
 
-    private enum mqttTopic {ROBOT_MSG, ROBOT_MSG_BROADCAST}
+    private enum mqttTopic {
+        ROBOT_MSG, ROBOT_MSG_BROADCAST
+    }
 
     private final HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
@@ -40,14 +42,15 @@ public class RobotMQTT {
     }
 
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic);          // Put to the queue
-        robotMqttClient.subscribe(topic);   // Subscribe through MqttHandler
+        topicsSub.put(key, topic); // Put to the queue
+        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
     public void handleSubscription(Robot r, MqttMsg m) {
         String topic = m.topic, msg = m.message;
 
-        if (topic.equals(topicsSub.get(mqttTopic.ROBOT_MSG)) || topic.equals(topicsSub.get(mqttTopic.ROBOT_MSG_BROADCAST))) {
+        if (topic.equals(topicsSub.get(mqttTopic.ROBOT_MSG))
+                || topic.equals(topicsSub.get(mqttTopic.ROBOT_MSG_BROADCAST))) {
             // robot/msg/{robotId} or robot/msg/broadcast
             // System.out.println("Received: " + topic + "> " + msg);
 

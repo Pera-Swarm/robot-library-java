@@ -16,7 +16,9 @@ public class ProximitySensor extends AbstractSensor {
 
     private final static int MQTT_TIMEOUT = 1000;
 
-    private enum mqttTopic {PROXIMITY_IN}
+    private enum mqttTopic {
+        PROXIMITY_IN
+    }
 
     private HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
@@ -29,8 +31,8 @@ public class ProximitySensor extends AbstractSensor {
     }
 
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic);      // Put to the queue
-        robotMqttClient.subscribe(topic);   // Subscribe through MqttHandler
+        topicsSub.put(key, topic); // Put to the queue
+        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
     @Override
@@ -41,7 +43,7 @@ public class ProximitySensor extends AbstractSensor {
 
         if (topic.equals(topicsSub.get(mqttTopic.PROXIMITY_IN))) {
             // sensor/proximity/{id}
-            //System.out.println("Input>" + msg);
+            // System.out.println("Input>" + msg);
             try {
                 proximity = new ProximityReadingType(msg);
             } catch (ProximityException e) {
@@ -59,9 +61,9 @@ public class ProximitySensor extends AbstractSensor {
         // Prepare the message
         JSONObject msg = new JSONObject();
         msg.put("id", robotId);
-        msg.put("reality", "M");       // inform the requesting reality
+        msg.put("reality", "M"); // inform the requesting reality
 
-        proximity_lock = true;        // Acquire the proximity sensor lock
+        proximity_lock = true; // Acquire the proximity sensor lock
 
         robotMqttClient.publish("sensor/proximity", msg.toJSONString());
         robot.delay(250);

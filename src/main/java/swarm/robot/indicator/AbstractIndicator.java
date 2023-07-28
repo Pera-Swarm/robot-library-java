@@ -20,7 +20,7 @@ public abstract class AbstractIndicator {
         // This will subscribe to a given topic through mqttHandler
     }
 
-    //  This will handle incoming messages with already subscribed topics
+    // This will handle incoming messages with already subscribed topics
     public abstract void handleSubscription(Robot r, MqttMsg m) throws ParseException;
 
 }

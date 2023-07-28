@@ -9,7 +9,9 @@ import java.util.HashMap;
 
 public class DirectedCommunication extends Communication {
 
-    enum mqttTopic {COMMUNICATION_IN_DIR}
+    enum mqttTopic {
+        COMMUNICATION_IN_DIR
+    }
 
     private final HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
@@ -19,8 +21,8 @@ public class DirectedCommunication extends Communication {
     }
 
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic);          // Put to the queue
-        robotMqttClient.subscribe(topic);   // Subscribe through MqttHandler
+        topicsSub.put(key, topic); // Put to the queue
+        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
     public void sendMessage(String msg) {

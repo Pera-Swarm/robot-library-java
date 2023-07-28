@@ -18,7 +18,9 @@ public class Coordinate implements IMqttHandler {
     protected RobotMqttClient robotMqttClient;
     private final int robotId;
 
-    private enum mqttTopic {ROBOT_LOCALIZATION}
+    private enum mqttTopic {
+        ROBOT_LOCALIZATION
+    }
 
     private final HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
@@ -33,8 +35,8 @@ public class Coordinate implements IMqttHandler {
     }
 
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic);          // Put to the queue
-        robotMqttClient.subscribe(topic);   // Subscribe through MqttHandler
+        topicsSub.put(key, topic); // Put to the queue
+        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
     public void handleSubscription(Robot r, MqttMsg m) {

@@ -25,7 +25,6 @@ public class RobotMqttClient implements MqttCallback {
     public Queue<MqttMsg> outQueue = new PriorityQueue<MqttMsg>();
 
     // Documentation: https://www.eclipse.org/paho/files/javadoc/index.html
-
     public RobotMqttClient(String server, int port, String userName, String password, String channel) {
 
         this.server = server;
@@ -76,7 +75,7 @@ public class RobotMqttClient implements MqttCallback {
         if (isConnected && topic.length() > 0 && body.length() > 0) {
             // Connected, non empty topic and body
 
-            String t = channel + "/" + topic;  // prepare topic with message channel
+            String t = channel + "/" + topic; // prepare topic with message channel
             MqttMessage m = new MqttMessage(body.getBytes());
             m.setQos(qos);
 
@@ -100,7 +99,7 @@ public class RobotMqttClient implements MqttCallback {
         if (isConnected && topic.length() > 0) {
             // connected and non empty topic
             try {
-                String t = channel + "/" + topic;  // prepare topic with message channel
+                String t = channel + "/" + topic; // prepare topic with message channel
                 client.subscribe(t);
                 System.out.println("Subscribed to " + t);
 
@@ -141,7 +140,8 @@ public class RobotMqttClient implements MqttCallback {
         String msg = new String(message.getPayload());
 
         if (msg.length() > 0) {
-            //System.out.println("Received " + topic + " >> " + new String(message.getPayload()));
+            // System.out.println("Received " + topic + " >> " + new
+            // String(message.getPayload()));
             inQueue.add(new MqttMsg(t, msg));
         }
     }
@@ -153,6 +153,5 @@ public class RobotMqttClient implements MqttCallback {
     public MqttMsg outQueue() {
         return this.outQueue.poll();
     }
-
 
 }

@@ -3,10 +3,10 @@ package swarm.robot.helpers;
 import swarm.configs.RobotSettings;
 import swarm.robot.exception.MotionControllerException;
 
-
 public class MotionController {
 
-    // This is the maximum interval allowed to coordinate calculation, smaller values increase the smoothness of the movement
+    // This is the maximum interval allowed to coordinate calculation, smaller
+    // values increase the smoothness of the movement
     static final private int maxInterval = 100;
 
     // REM: Obtain this by an experiment
@@ -34,19 +34,19 @@ public class MotionController {
 
     // -----------------------------------
 
-    public void rotateDegree(int speed, float degree){
+    public void rotateDegree(int speed, float degree) {
         // TODO: implement this
         // degree is relative angle displacement from the current heading
-        // prepare a mathematical equation to translate speed and  degree into
+        // prepare a mathematical equation to translate speed and degree into
         // the function 'public void move(int leftSpeed, int rightSpeed, int interval)'
     }
 
-    public void moveDistance(int speed, float distance){
+    public void moveDistance(int speed, float distance) {
         // TODO: implement & test this
         // distance is relative displacement (in cm) from the current position
 
-        int interval =  (int) Math.ceil((double)distance/speed);
-        move(speed,speed, interval);
+        int interval = (int) Math.ceil((double) distance / speed);
+        move(speed, speed, interval);
     }
 
     // -----------------------------------
@@ -55,7 +55,6 @@ public class MotionController {
 
             int steps = (int) Math.ceil((double) interval / maxInterval);
             int stepInterval = interval / steps;
-
 
             int cumulativeInterval = 0;
 
@@ -71,11 +70,12 @@ public class MotionController {
                 double y = c.getY() + d * Math.sin(h);
                 double heading = (c.getHeadingRad() + (dR - dL) / (RobotSettings.ROBOT_WIDTH)); // in radians
 
-//                double dist = Math.sqrt(Math.pow(x - c.getX(), 2) + Math.pow(y - c.getY(), 2));
-//                double speed = ((leftSpeed + rightSpeed) / 2.0) * speedFactor;
-//                int time = (int) (1000 * dist / speed); // time in ms
-//                System.out.println("dist:" + dist + " time:" + time + " speed:"  + speed);
-//                delay(time);
+                // double dist = Math.sqrt(Math.pow(x - c.getX(), 2) + Math.pow(y - c.getY(),
+                // 2));
+                // double speed = ((leftSpeed + rightSpeed) / 2.0) * speedFactor;
+                // int time = (int) (1000 * dist / speed); // time in ms
+                // System.out.println("dist:" + dist + " time:" + time + " speed:" + speed);
+                // delay(time);
 
                 c.setCoordinate(x, y, Math.toDegrees(heading));
 
@@ -86,7 +86,7 @@ public class MotionController {
                 if (cumulativeInterval >= 2000) {
                     debug("Adding extra delay, " + cumulativeInterval);
 
-                    //c.print();
+                    // c.print();
                     c.publishCoordinate();
                     delay(cumulativeInterval - 1000);
                     cumulativeInterval -= 1000;
@@ -118,18 +118,21 @@ public class MotionController {
         double phiD = Math.atan2(dy, dx);
         double w = 0.2 * (phiD - heading);
 
-        debug("dx:" + dx + " dy:" + dy + " head:" + Math.toDegrees(heading) + " w:" + Math.toDegrees(w) + " phiD:" + phiD);
+        debug("dx:" + dx + " dy:" + dy + " head:" + Math.toDegrees(heading) + " w:" + Math.toDegrees(w) + " phiD:"
+                + phiD);
 
         c.setX(x + 5 * Math.cos(w));
         c.setY(y + 5 * Math.sin(w));
         c.setHeadingRad(heading + w);
         c.publishCoordinate(); // Publish to visualizer through MQTT
 
-        //double vR = (2 * velocity/2 + w * RobotSettings.ROBOT_WIDTH) / 2 * RobotSettings.ROBOT_WHEEL_RADIUS;
-        //double vL = (2 * velocity/2 - w * RobotSettings.ROBOT_WIDTH) / 2 * RobotSettings.ROBOT_WHEEL_RADIUS;
+        // double vR = (2 * velocity/2 + w * RobotSettings.ROBOT_WIDTH) / 2 *
+        // RobotSettings.ROBOT_WHEEL_RADIUS;
+        // double vL = (2 * velocity/2 - w * RobotSettings.ROBOT_WIDTH) / 2 *
+        // RobotSettings.ROBOT_WHEEL_RADIUS;
 
-        //System.out.println("vL:" + vL + " vR:" + vR + "\n" );
-        //move((int) vL, (int) vR, interval);
+        // System.out.println("vL:" + vL + " vR:" + vR + "\n" );
+        // move((int) vL, (int) vR, interval);
 
         return (c.getX() == targetX && c.getY() == targetY);
     }

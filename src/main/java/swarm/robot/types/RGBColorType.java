@@ -55,7 +55,7 @@ public class RGBColorType {
     }
 
     public int[] getColor() {
-        return new int[]{this.R, this.G, this.B};
+        return new int[] { this.R, this.G, this.B };
     }
 
     public String toString() {
@@ -67,6 +67,6 @@ public class RGBColorType {
     }
 
     public boolean compareTo(RGBColorType color) {
-        return (color.getR()==this.R) && (color.getG()==this.G) && (color.getB()==this.B);
+        return (color.getR() == this.R) && (color.getG() == this.G) && (color.getB() == this.B);
     }
 }

@@ -18,7 +18,7 @@ public abstract class AbstractSensor implements IMqttHandler {
     }
 
     public void handleSubscription(Robot r, MqttMsg m) {
-        //  This will handle incoming messages with already subscribed topics
+        // This will handle incoming messages with already subscribed topics
     }
 
 }

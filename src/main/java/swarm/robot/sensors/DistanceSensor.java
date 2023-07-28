@@ -12,7 +12,9 @@ import swarm.robot.Robot;
 
 public class DistanceSensor extends AbstractSensor {
 
-    private enum mqttTopic {DISTANCE_IN, DISTANCE_LOOK}
+    private enum mqttTopic {
+        DISTANCE_IN, DISTANCE_LOOK
+    }
 
     private HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
@@ -28,8 +30,8 @@ public class DistanceSensor extends AbstractSensor {
     }
 
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic);          // Put to the queue
-        robotMqttClient.subscribe(topic);   // Subscribe through MqttHandler
+        topicsSub.put(key, topic); // Put to the queue
+        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
     @Override
@@ -40,7 +42,7 @@ public class DistanceSensor extends AbstractSensor {
 
         if (topic.equals(topicsSub.get(mqttTopic.DISTANCE_IN))) {
             // sensor/distance/{id}
-            //System.out.println("Input>" + msg);
+            // System.out.println("Input>" + msg);
 
             if (msg.compareTo("Infinity") == 0) {
                 // -1 will be returned as a fail-proof option. Should throw an exception
@@ -50,9 +52,9 @@ public class DistanceSensor extends AbstractSensor {
             }
             dist_lock = false;
 
-//        } else if (topic.equals(topicsSub.get(mqttTopic.DISTANCE_LOOK))) {
-//            // sensor/distance/{id}/?
-//            System.out.println("Received: " + topic + "> " + msg);
+            // } else if (topic.equals(topicsSub.get(mqttTopic.DISTANCE_LOOK))) {
+            // // sensor/distance/{id}/?
+            // System.out.println("Received: " + topic + "> " + msg);
 
         } else {
             System.out.println("Received (unknown): " + topic + "> " + msg);
@@ -63,13 +65,13 @@ public class DistanceSensor extends AbstractSensor {
         // Prepare the message
         JSONObject msg = new JSONObject();
         msg.put("id", robotId);
-        msg.put("reality", "M");    // inform the requesting reality
+        msg.put("reality", "M"); // inform the requesting reality
 
         // Start measuring the time
         long begin = System.currentTimeMillis();
         // ---------------------------
 
-        dist_lock = true;           // Acquire the distance sensor lock
+        dist_lock = true; // Acquire the distance sensor lock
         robotMqttClient.publish("sensor/distance", msg.toJSONString());
         robot.delay(250);
 
@@ -97,7 +99,7 @@ public class DistanceSensor extends AbstractSensor {
 
         JSONObject logMsg = new JSONObject();
         logMsg.put("id", robotId);
-        logMsg.put("msg", (end-begin));
+        logMsg.put("msg", (end - begin));
         robotMqttClient.publish("robot/log", logMsg.toJSONString());
         // ---------------------------
 

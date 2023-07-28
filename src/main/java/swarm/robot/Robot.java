@@ -45,7 +45,8 @@ public abstract class Robot implements Runnable, IRobotState {
         this.id = id;
         this.reality = reality;
 
-        robotMqttClient = new RobotMqttClient(MQTTSettings.server, MQTTSettings.port, MQTTSettings.userName, MQTTSettings.password, MQTTSettings.channel);
+        robotMqttClient = new RobotMqttClient(MQTTSettings.server, MQTTSettings.port, MQTTSettings.userName,
+                MQTTSettings.password, MQTTSettings.channel);
 
         coordinates = new Coordinate(id, x, y, heading, robotMqttClient);
         robotMQTT = new RobotMQTT(id, robotMqttClient, reality);
@@ -83,7 +84,7 @@ public abstract class Robot implements Runnable, IRobotState {
     public void run() {
         setup();
 
-        //noinspection InfiniteLoopStatement
+        // noinspection InfiniteLoopStatement
         while (true) {
             try {
                 loop();
@@ -107,7 +108,7 @@ public abstract class Robot implements Runnable, IRobotState {
     public void handleSubscribeQueue() throws ParseException {
         // Handle the messages in incoming queue
 
-        while(!robotMqttClient.inQueue.isEmpty()){
+        while (!robotMqttClient.inQueue.isEmpty()) {
             MqttMsg m = robotMqttClient.inQueue.poll();
 
             if (m != null) {
@@ -165,7 +166,7 @@ public abstract class Robot implements Runnable, IRobotState {
     private void handlePublishQueue() {
         // Publish messages which are collected in the outgoing queue
 
-        while(!robotMqttClient.outQueue.isEmpty()){
+        while (!robotMqttClient.outQueue.isEmpty()) {
             MqttMsg m = robotMqttClient.outQueue.poll();
             assert m != null;
             robotMqttClient.publish(m.topic, m.message, m.QoS);
