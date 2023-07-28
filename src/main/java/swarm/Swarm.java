@@ -6,15 +6,15 @@ import swarm.robot.VirtualRobot;
 import swarm.robot.exception.RGBColorException;
 import swarm.robot.types.RGBColorType;
 
-import robotImplementations.ColorRippleRobot;
-import robotImplementations.DiscoverColorRobot;
-import robotImplementations.ObstacleAvoidRobot;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
+
+import Robots.ColorRippleRobot;
+import Robots.DiscoverColorRobot;
+import Robots.ObstacleAvoidRobot;
 
 public class Swarm extends Thread {
 
@@ -23,7 +23,8 @@ public class Swarm extends Thread {
         try {
             // COMPLETE THIS BEFORE RUN
             // Read config properties from the file, src/resources/config/mqtt.properties
-            // If it isn't there, please make one, as given sample in the 'sample_mqtt.properties' file
+            // If it isn't there, please make one, as given sample in the
+            // 'sample_mqtt.properties' file
 
             File configFile = new File("src/resources/config/mqtt.properties");
             FileReader reader = new FileReader(configFile);
@@ -62,7 +63,7 @@ public class Swarm extends Thread {
         vr[4] = new ObstacleAvoidRobot(14, -30, -40, 105);
 
         for (Robot robot : vr) {
-//            vr[i] = new ObstacleAvoidRobot(robotList[i], -50 + 25 * i, 0, 90);
+            // vr[i] = new ObstacleAvoidRobot(robotList[i], -50 + 25 * i, 0, 90);
             new Thread(robot).start();
         }
 
@@ -70,7 +71,7 @@ public class Swarm extends Thread {
 
     private static void colorRippleExperiment() {
         // Note: 0,1,2,6 and 7 are ignored; hardware robots
-        int[] robotList = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int[] robotList = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         circularFormation(robotList, 0, 0, 0, 60, 0, 36);
     }
 
@@ -90,13 +91,13 @@ public class Swarm extends Thread {
         vr[3] = new DiscoverColorRobot(13, 54, 65, -70, obstacleColor);
         vr[4] = new DiscoverColorRobot(14, 0, -40, 105, obstacleColor);
 
-//        vr[5] = new DiscoverColorRobot(0, 80, 20, 90, obstacleColor);
-//        vr[6] = new DiscoverColorRobot(1, 40, -80, -90, obstacleColor);
-//        vr[7] = new DiscoverColorRobot(2, -40, -70, 45, obstacleColor);
-//        vr[8] = new DiscoverColorRobot(6, -50, -50, -90, obstacleColor);
-//        vr[9] = new DiscoverColorRobot(7, -70, 0, -45, obstacleColor);
+        // vr[5] = new DiscoverColorRobot(0, 80, 20, 90, obstacleColor);
+        // vr[6] = new DiscoverColorRobot(1, 40, -80, -90, obstacleColor);
+        // vr[7] = new DiscoverColorRobot(2, -40, -70, 45, obstacleColor);
+        // vr[8] = new DiscoverColorRobot(6, -50, -50, -90, obstacleColor);
+        // vr[9] = new DiscoverColorRobot(7, -70, 0, -45, obstacleColor);
 
-        //robots start to move
+        // robots start to move
         for (Robot robot : vr) {
             new Thread(robot).start();
         }
@@ -111,7 +112,8 @@ public class Swarm extends Thread {
         }
     }
 
-    private static void circularFormation(int[] robotList, int centerX, int centerY, int headingOffset, int radius, int startAngle, int deltaAngle) {
+    private static void circularFormation(int[] robotList, int centerX, int centerY, int headingOffset, int radius,
+            int startAngle, int deltaAngle) {
         Robot[] vr = new VirtualRobot[robotList.length];
 
         int x, y, robotHeading;
@@ -133,7 +135,8 @@ public class Swarm extends Thread {
         }
     }
 
-    private static void spiralFormation(int[] robotList, int centerX, int centerY, int headingOffset, int startRadius, int deltaRadius, int startAngle, int deltaAngle) {
+    private static void spiralFormation(int[] robotList, int centerX, int centerY, int headingOffset, int startRadius,
+            int deltaRadius, int startAngle, int deltaAngle) {
         Robot[] vr = new VirtualRobot[robotList.length];
 
         int x, y, robotHeading;

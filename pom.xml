@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>swarm.node</groupId>
-    <artifactId>swarm-node</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>pera.swarm</groupId>
+    <artifactId>java-robot</artifactId>
+    <version>1.0.0</version>
 
-    <name>Pera-swarm</name>
-    <url>http://pera-swarm.github.io/</url>
+    <name>Pera-Swarm Java Node</name>
+    <url>https://github.com/Pera-Swarm/robot-library-java</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,21 +17,11 @@
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
-    <!-- <distributionManagement>
-        <repository>
-        <uniqueVersion>false</uniqueVersion>
-        <id>corp1</id>
-        <name>PeraSwarm-JavaNode</name>
-        <url>scp://repo/maven2</url>
-        <layout>default</layout>
-        </repository>
-    </distributionManagement> -->
-
     <distributionManagement>
     <repository>
         <id>github</id>
         <name>GitHub OWNER Apache Maven Packages</name>
-        <url>https://maven.pkg.github.com/Pera-Swarm/java-swarm-node</url>
+        <url>https://maven.pkg.github.com/Pera-Swarm/robot-library-java</url>
     </repository>
     </distributionManagement>
 

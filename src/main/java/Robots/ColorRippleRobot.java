@@ -1,4 +1,4 @@
-package robotImplementations;
+package Robots;
 
 import swarm.robot.VirtualRobot;
 

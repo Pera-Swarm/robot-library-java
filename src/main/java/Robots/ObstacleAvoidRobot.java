@@ -1,4 +1,4 @@
-package robotImplementations;
+package Robots;
 
 import swarm.robot.VirtualRobot;
 
@@ -15,13 +15,14 @@ public class ObstacleAvoidRobot extends VirtualRobot {
     public void loop() throws Exception {
         super.loop();
 
-        if(state==robotState.RUN) {
+        if (state == robotState.RUN) {
             double dist = distSensor.getDistance();
 
             if (dist < 15) {
 
                 // Generate a random number in [-1000,1000] range
-                // if even, rotate CW, otherwise rotate CCW an angle depends on the random number
+                // if even, rotate CW, otherwise rotate CCW an angle depends on the random
+                // number
                 int random = -1000 + ((int) ((Math.random() * 2000)));
                 int sign = (random % 2 == 0) ? 1 : -1;
 

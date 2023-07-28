@@ -1,4 +1,4 @@
-package robotImplementations;
+package Robots;
 
 import swarm.robot.VirtualRobot;
 import swarm.robot.types.RGBColorType;
@@ -24,7 +24,7 @@ public class DiscoverColorRobot extends VirtualRobot {
     @Override
     public void loop() throws Exception {
         super.loop();
-//        System.out.println(state);
+        // System.out.println(state);
 
         if (searching && state == robotState.RUN) {
             double dist = distSensor.getDistance();
@@ -45,11 +45,13 @@ public class DiscoverColorRobot extends VirtualRobot {
 
                 } else {
                     // Generate a random number in [-1000,1000] range
-                    // if even, rotate CW, otherwise rotate CCW an angle depends on the random number
+                    // if even, rotate CW, otherwise rotate CCW an angle depends on the random
+                    // number
                     int random = -1000 + ((int) ((Math.random() * 2000)));
                     int sign = (random % 2 == 0) ? 1 : -1;
 
-                    System.out.println("\t Not the obstacle we are looking for, go back and rotate " + ((sign > 0) ? "CW" : "CCW"));
+                    System.out.println("\t Not the obstacle we are looking for, go back and rotate "
+                            + ((sign > 0) ? "CW" : "CCW"));
 
                     // Go back a little
                     motion.move(-100, -100, 900);
