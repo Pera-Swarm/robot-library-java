@@ -1,4 +1,5 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0) [![Java CI](https://github.com/Pera-Swarm/robot-library-java/actions/workflows/java-ci.yml/badge.svg)](https://github.com/Pera-Swarm/robot-library-java/actions/workflows/java-ci.yml) [![Maven Package](https://github.com/Pera-Swarm/robot-library-java/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/Pera-Swarm/robot-library-java/actions/workflows/maven-publish.yml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0) [![Java CI](https://github.com/Pera-Swarm/robot-library-java/actions/workflows/java-ci.yml/badge.svg)](https://github.com/Pera-Swarm/robot-library-java/actions/workflows/java-ci.yml) ![GitHub Release](https://img.shields.io/github/v/release/Pera-Swarm/robot-library-java?filter=*&label=Release)
+
 
 # Robot Library (Java)
 
