@@ -27,8 +27,7 @@
     </distributionManagement>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/Pera-Swarm/robot-library-java.git</developerConnection>
-        <tag>java-robot-0.9.1</tag>
+        <developerConnection>scm:git:https://github.com/ajavageek/renamer-swing.git</developerConnection>
     </scm>
 
     <repositories>
