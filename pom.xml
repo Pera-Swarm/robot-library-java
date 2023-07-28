@@ -7,7 +7,7 @@
 
     <groupId>pera.swarm</groupId>
     <artifactId>java-robot</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <name>Pera-Swarm Java Node</name>
     <url>https://github.com/Pera-Swarm/robot-library-java</url>
@@ -25,6 +25,11 @@
             <url>https://maven.pkg.github.com/Pera-Swarm/robot-library-java</url>
         </repository>
     </distributionManagement>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/ajavageek/renamer-swing.git</developerConnection>
+        <tag>java-robot-1.0.0</tag>
+    </scm>
 
     <repositories>
         <repository>
