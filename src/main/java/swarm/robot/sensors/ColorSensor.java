@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import org.json.simple.JSONObject;
 import swarm.mqtt.MqttMsg;
-import swarm.robot.exception.RGBColorException;
 import swarm.robot.exception.SensorException;
 import swarm.robot.Robot;
 import swarm.robot.types.RGBColorType;
@@ -28,11 +27,7 @@ public class ColorSensor extends AbstractSensor {
     public ColorSensor(Robot robot, RobotMqttClient m) {
         super(robot, m);
 
-        try {
-            color = new RGBColorType(0, 0, 0);
-        } catch (RGBColorException e) {
-            e.printStackTrace();
-        }
+        color = new RGBColorType(0, 0, 0);
         subscribe(mqttTopic.COLOR_IN, "sensor/color/" + robotId);
         subscribe(mqttTopic.COLOR_LOOK, "sensor/color/" + robotId + "/?");
     }
@@ -52,10 +47,6 @@ public class ColorSensor extends AbstractSensor {
 
             color.setColor(msg);
             col_lock = false;
-
-            // } else if (topic.equals(topicsSub.get(mqttTopic.COLOR_LOOK))) {
-            // // sensor/color/{id}/?
-            // System.out.println("Received: " + topic + "> " + color.toString());
 
         } else {
             System.out.println("Received (unknown): " + topic + "> " + color.toString());

@@ -52,10 +52,6 @@ public class DistanceSensor extends AbstractSensor {
             }
             dist_lock = false;
 
-            // } else if (topic.equals(topicsSub.get(mqttTopic.DISTANCE_LOOK))) {
-            // // sensor/distance/{id}/?
-            // System.out.println("Received: " + topic + "> " + msg);
-
         } else {
             System.out.println("Received (unknown): " + topic + "> " + msg);
         }

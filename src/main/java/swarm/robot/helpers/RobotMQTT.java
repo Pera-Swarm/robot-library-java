@@ -55,7 +55,6 @@ public class RobotMQTT {
             // System.out.println("Received: " + topic + "> " + msg);
 
             String msgTopic = msg.split(" ")[0];
-            // int msgValue = Integer.parseInt(msg.split(" ")[1]);
 
             switch (msgTopic) {
                 case "ID?":

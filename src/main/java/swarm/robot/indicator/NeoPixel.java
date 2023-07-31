@@ -52,19 +52,14 @@ public class NeoPixel extends AbstractIndicator {
     }
 
     public void changeColor(int r, int g, int b) {
-        try {
-            // Validate and store R,G,B properly
-            RGBColorType color = new RGBColorType(r, g, b);
+        // Validate and store R,G,B properly
+        RGBColorType color = new RGBColorType(r, g, b);
 
-            JSONObject obj = new JSONObject();
-            obj.put("id", robotId);
-            obj.put("R", color.getR());
-            obj.put("G", color.getG());
-            obj.put("B", color.getB());
-            robotMqttClient.publish("output/neopixel", obj.toJSONString());
-
-        } catch (RGBColorException e) {
-            e.printStackTrace();
-        }
+        JSONObject obj = new JSONObject();
+        obj.put("id", robotId);
+        obj.put("R", color.getR());
+        obj.put("G", color.getG());
+        obj.put("B", color.getB());
+        robotMqttClient.publish("output/neopixel", obj.toJSONString());
     }
 }

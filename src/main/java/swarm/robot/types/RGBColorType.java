@@ -5,9 +5,9 @@ import swarm.robot.exception.RGBColorException;
 public class RGBColorType {
     private int R, G, B;
 
-    public RGBColorType(int R, int G, int B) throws RGBColorException {
+    public RGBColorType(int R, int G, int B) {
         if (R < 0 || R > 255 || G < 0 || G > 255 || B < 0 || B > 255) {
-            throw new RGBColorException(R, G, B);
+            throw new IllegalArgumentException("R,G and B values must be between 0 and 255");
         } else {
             this.R = R;
             this.G = G;
