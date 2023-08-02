@@ -10,7 +10,7 @@ import java.util.Properties;
 
 import Robots.*;
 
-public class Swarm extends Thread {
+public class App extends Thread {
 
     public static void main(String[] args) {
 
@@ -39,7 +39,7 @@ public class Swarm extends Thread {
 
         } catch (FileNotFoundException ex) {
             // file does not exist
-            System.out.println("File Not Found !!!");
+            System.out.println("Config file, `resources/config/mqtt.properties` Not Found !!!");
 
         } catch (IOException ex) {
             // I/O error
