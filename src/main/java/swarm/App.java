@@ -2,6 +2,8 @@ package swarm;
 
 import swarm.configs.MQTTSettings;
 import swarm.robot.Robot;
+import swarm.robot.VirtualRobot;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -32,10 +34,24 @@ public class App extends Thread {
             MQTTSettings.channel = props.getProperty("channel", "v1");
             reader.close();
 
-            // TODO: Add the robot formation in here
-
+            // Start a single robot
             Robot robot = new MyTestRobot(10, 0, 0, 90);
             new Thread(robot).start();
+
+            // // Start a swarm of robots
+            // int[] robotList = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+            // int startX = 0;
+            // int startY = 0;
+            // int startHeading = 90;
+
+            // Robot[] vr = new VirtualRobot[robotList.length];
+
+            // for (int i = 0; i < robotList.length; i++) {
+            // vr[i] = new MyTestRobot(robotList[i], startX + 40 * i, startY + 50 * i,
+            // startHeading + 10 * i);
+            // new Thread(vr[i]).start();
+            // }
 
         } catch (FileNotFoundException ex) {
             // file does not exist
