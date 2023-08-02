@@ -5,8 +5,6 @@
 
 This is the Java Library Implementation of the Virtual Robots under, *Pera-Swarm*
 
-More details will be updated soon.
-
 ---
 
 ## Local Environment Setup
@@ -22,3 +20,7 @@ username=user
 password=pass
 channel=v1
 ```
+
+## Detailed Instruction 
+
+- [Setup Guide for the Java Robot Library](https://pera-swarm.ce.pdn.ac.lk/docs/robots/virtual/v1/java/setup-guide-library/)
