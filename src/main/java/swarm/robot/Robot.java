@@ -176,19 +176,19 @@ public abstract class Robot implements Runnable, IRobotState {
     // State Change methods, implement from IRobotState -------------------
     @Override
     public void start() {
-        System.out.println("pattern start on " + id);
+        System.out.println("Robot start on " + id);
         state = robotState.RUN;
     }
 
     @Override
     public void stop() {
-        System.out.println("pattern stop on " + id);
+        System.out.println("Robot stop on " + id);
         state = robotState.WAIT;
     }
 
     @Override
     public void reset() {
-        System.out.println("pattern reset on " + id);
+        System.out.println("Robot reset on " + id);
         state = robotState.BEGIN;
     }
 
