@@ -21,7 +21,7 @@ public class MotionController {
 
     private final Coordinate c;
 
-    private MotionController(Coordinate c) {
+    public MotionController(Coordinate c) {
         this.c = c;
     }
 
@@ -154,7 +154,7 @@ public class MotionController {
             int steps = Math.max(1, (int) Math.ceil(duration / maxDuration));
             int stepInterval = (int) duration / steps;
             int cumulativeInterval = 0;
-            debug("Calculate movement using " + steps + " steps, each has " + stepInterval + " intervals", 1);
+            debug("Calculate movement using " + steps + " steps, each has " + stepInterval + " intervals", 0);
 
             for (int j = 0; j < steps; j++) {
                 double dL = leftSpeed * speedFactor * (stepInterval / 1000.0);
