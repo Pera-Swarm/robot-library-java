@@ -86,15 +86,16 @@ public abstract class Robot implements Runnable, IRobotState {
 
         // noinspection InfiniteLoopStatement
         while (true) {
+            long begin_time = System.currentTimeMillis();
             try {
                 loop();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            long end_time = System.currentTimeMillis();
 
             // DO NOT REMOVE OR EDIT THIS DELAY
-            // TODO: implement as delay = 1000 - timeTaken(loop())
-            delay(1000);
+            delay((int) Math.max(0, 1000 - (end_time - begin_time)));
 
             try {
                 handleSubscribeQueue();
