@@ -2,7 +2,6 @@ package swarm;
 
 import swarm.configs.MQTTSettings;
 import swarm.robot.Robot;
-import swarm.robot.VirtualRobot;
 
 import java.io.File;
 import java.io.FileNotFoundException;

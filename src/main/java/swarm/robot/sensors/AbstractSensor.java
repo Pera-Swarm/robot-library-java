@@ -29,7 +29,7 @@ public abstract class AbstractSensor implements IMqttHandler {
     }
 
     /**
-     * Handle colorSensor related MQTT subscriptions
+     * Handle related MQTT subscriptions
      * 
      * @param robot Robot object
      * @param m     Subscription topic received object

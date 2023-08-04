@@ -7,8 +7,6 @@ public interface IRobotState {
 
     public void loop() throws Exception;
 
-    public void interrupt();
-
     public void sensorInterrupt(String sensor, String value);
 
     public void communicationInterrupt(String msg);

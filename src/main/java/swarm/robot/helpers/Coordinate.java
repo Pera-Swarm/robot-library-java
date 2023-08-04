@@ -30,12 +30,21 @@ public class Coordinate implements IMqttHandler {
 
     private final HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
-    public Coordinate(int robotId, double x, double y, double heading, RobotMqttClient m) {
+    /**
+     * Coordinate class
+     * 
+     * @param robotId
+     * @param x          coordinate as double
+     * @param y          coordinate as double
+     * @param heading    direction in degrees, as double
+     * @param mqttClient mqttClient object
+     */
+    public Coordinate(int robotId, double x, double y, double heading, RobotMqttClient mqttClient) {
         this.x = x;
         this.y = y;
         this.heading = heading;
         this.robotId = robotId;
-        this.robotMqttClient = m;
+        this.robotMqttClient = mqttClient;
 
         subscribe(mqttTopic.ROBOT_LOCALIZATION, "localization/update/?");
     }

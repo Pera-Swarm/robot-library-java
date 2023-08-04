@@ -21,8 +21,13 @@ public class MotionController {
 
     private final Coordinate c;
 
-    public MotionController(Coordinate c) {
-        this.c = c;
+    /**
+     * MotionController class
+     * 
+     * @param c Coordinate object
+     */
+    public MotionController(Coordinate coordinate) {
+        this.c = coordinate;
     }
 
     /**
