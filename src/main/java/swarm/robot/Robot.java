@@ -15,6 +15,11 @@ import swarm.robot.sensors.ColorSensor;
 import swarm.robot.sensors.DistanceSensor;
 import swarm.robot.sensors.ProximitySensor;
 
+/**
+ * Abstract class implementation for Robot
+ * 
+ * @author Nuwan Jaliyagoda
+ */
 public abstract class Robot implements Runnable, IRobotState {
 
     // Sensors -----------------------------------------------------------
@@ -40,6 +45,15 @@ public abstract class Robot implements Runnable, IRobotState {
     protected char reality;
     protected robotState state = robotState.WAIT;
 
+    /**
+     * Abstract Robot class
+     * 
+     * @param id      robot Id
+     * @param x       coordinate as double
+     * @param y       coordinate as double
+     * @param heading direction in degrees, as double
+     * @param reality reality, currently supports only 'V'
+     */
     public Robot(int id, double x, double y, double heading, char reality) {
 
         this.id = id;
@@ -58,6 +72,9 @@ public abstract class Robot implements Runnable, IRobotState {
         this.motion = new MotionController(coordinates);
     }
 
+    /**
+     * Setup the modules, emulators and indicators
+     */
     public void setup() {
         // Setup each module
         distSensor = new DistanceSensor(this, robotMqttClient);
@@ -71,17 +88,22 @@ public abstract class Robot implements Runnable, IRobotState {
 
         coordinates.setCoordinate(coordinates.getX(), coordinates.getY(), coordinates.getHeading());
         coordinates.publishCoordinate();
-
     }
 
-    // Robot getters and setters -----------------------------------------
+    /**
+     * Get robot Id
+     * 
+     * @return robotId as integer
+     */
     public int getId() {
         return this.id;
     }
 
-    // -------------------------------------------------------------------
+    /**
+     * Robot's main event loop
+     */
     @Override
-    public void run() {
+    public final void run() {
         setup();
 
         // noinspection InfiniteLoopStatement
@@ -105,9 +127,10 @@ public abstract class Robot implements Runnable, IRobotState {
         }
     }
 
-    // MQTT related methods ----------------------------------------------
+    /**
+     * Handle MQTT subscriptions
+     */
     public void handleSubscribeQueue() throws ParseException {
-        // Handle the messages in incoming queue
 
         while (!robotMqttClient.inQueue.isEmpty()) {
             MqttMsg m = robotMqttClient.inQueue.poll();
@@ -164,6 +187,11 @@ public abstract class Robot implements Runnable, IRobotState {
         }
     }
 
+    /**
+     * Publish the queued MQTT messages
+     * 
+     * @Deprecated
+     */
     private void handlePublishQueue() {
         // Publish messages which are collected in the outgoing queue
 
@@ -174,26 +202,38 @@ public abstract class Robot implements Runnable, IRobotState {
         }
     }
 
-    // State Change methods, implement from IRobotState -------------------
+    /**
+     * Method which handle START command
+     */
     @Override
     public void start() {
         System.out.println("Robot start on " + id);
         state = robotState.RUN;
     }
 
+    /**
+     * Method which handle STOP command
+     */
     @Override
     public void stop() {
         System.out.println("Robot stop on " + id);
         state = robotState.WAIT;
     }
 
+    /**
+     * Method which handle RESET command
+     */
     @Override
     public void reset() {
         System.out.println("Robot reset on " + id);
         state = robotState.BEGIN;
     }
 
-    // Utility Methods ---------------------------------------------------
+    /**
+     * Delay the robot functionality for a given time
+     * 
+     * @param delay, delay in milliseconds
+     */
     public void delay(int milliseconds) {
         try {
             Thread.sleep(milliseconds);
