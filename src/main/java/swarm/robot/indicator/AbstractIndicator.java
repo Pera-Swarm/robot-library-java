@@ -5,22 +5,34 @@ import swarm.mqtt.RobotMqttClient;
 import swarm.mqtt.MqttMsg;
 import swarm.robot.Robot;
 
+/**
+ * Abstract class implementation for Indicators
+ * 
+ * @author Nuwan Jaliyagoda
+ */
 public abstract class AbstractIndicator {
     protected RobotMqttClient robotMqttClient;
     protected int robotId;
     protected Robot robot;
 
-    public AbstractIndicator(Robot robot, RobotMqttClient m) {
-        this.robotMqttClient = m;
+    /**
+     * AbstractIndicator class
+     * 
+     * @param robot      robot object
+     * @param mqttClient mqttClient object
+     */
+    public AbstractIndicator(Robot robot, RobotMqttClient mqttClient) {
+        this.robotMqttClient = mqttClient;
         this.robotId = robot.getId();
         this.robot = robot;
     }
 
-    private void subscribe(String topic) {
-        // This will subscribe to a given topic through mqttHandler
-    }
-
-    // This will handle incoming messages with already subscribed topics
+    /**
+     * Handle related MQTT subscriptions
+     * 
+     * @param robot Robot object
+     * @param m     Subscription topic received object
+     */
     public abstract void handleSubscription(Robot r, MqttMsg m) throws ParseException;
 
 }

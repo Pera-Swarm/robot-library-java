@@ -5,11 +5,15 @@ import org.json.simple.parser.ParseException;
 import swarm.mqtt.RobotMqttClient;
 import swarm.mqtt.MqttMsg;
 import swarm.robot.Robot;
-import swarm.robot.exception.RGBColorException;
 import swarm.robot.types.RGBColorType;
 
 import java.util.HashMap;
 
+/**
+ * NeoPixel LED Ring class
+ * 
+ * @author Nuwan Jaliyagoda
+ */
 public class NeoPixel extends AbstractIndicator {
 
     private enum mqttTopic {
@@ -20,23 +24,40 @@ public class NeoPixel extends AbstractIndicator {
 
     private int R, G, B;
 
-    public NeoPixel(Robot robot, RobotMqttClient m) {
-        super(robot, m);
-        // subscribe(mqttTopic.NEOPIXEL_IN, "output/neopixel/" + robotId);
+    /**
+     * NeoPixel class
+     * 
+     * @param robot      robot object
+     * @param mqttClient mqttClient object
+     */
+    public NeoPixel(Robot robot, RobotMqttClient mqttClient) {
+        super(robot, mqttClient);
+
     }
 
+    /**
+     * subscribe to a MQTT topic
+     * 
+     * @param key   Subscription topic key
+     * @param topic Subscription topic value
+     */
     protected void subscribe(mqttTopic key, String topic) {
         topicsSub.put(key, topic); // Put to the queue
         robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
+    /**
+     * Handle NeoPixel related MQTT subscriptions
+     * 
+     * @param robot Robot object
+     * @param m     Subscription topic received object
+     */
     @Override
     public void handleSubscription(Robot r, MqttMsg m) throws ParseException {
         String topic = m.topic, msg = m.message;
 
         if (topic.equals(topicsSub.get(mqttTopic.NEOPIXEL_IN))) {
             // output/neopixel/{id}
-            // System.out.println("Received: " + topic + "> " + msg);
 
             String[] colors = msg.split(" ");
             R = Integer.parseInt(colors[0]);
@@ -44,16 +65,22 @@ public class NeoPixel extends AbstractIndicator {
             B = Integer.parseInt(colors[2]);
 
             changeColor(R, G, B);
-            // System.out.println("Received: " + topic + "> " + R + "," + G + "," + B);
 
         } else {
             System.out.println("Received (unknown): " + topic + "> " + msg);
         }
     }
 
-    public void changeColor(int r, int g, int b) {
-        // Validate and store R,G,B properly
-        RGBColorType color = new RGBColorType(r, g, b);
+    /**
+     * Change the color of the NeoPixel Ring
+     * 
+     * @param red   Red intensity, [0,255]
+     * @param green Green intensity, [0,255]
+     * @param blue  Blue intensity, [0,255]
+     */
+    public void changeColor(int red, int green, int blue) {
+
+        RGBColorType color = new RGBColorType(red, green, blue);
 
         JSONObject obj = new JSONObject();
         obj.put("id", robotId);
