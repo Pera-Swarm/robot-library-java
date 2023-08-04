@@ -8,6 +8,11 @@ import swarm.robot.Robot;
 
 import java.util.HashMap;
 
+/**
+ * The class that handle robot's MQTT interactions
+ * 
+ * @author Nuwan Jaliyagoda
+ */
 public class RobotMQTT {
 
     protected RobotMqttClient robotMqttClient;
@@ -20,6 +25,13 @@ public class RobotMQTT {
 
     private final HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
+    /**
+     * RobotMQTT class
+     * 
+     * @param robotId
+     * @param mqtt    mqtt object
+     * @param reality reality of the robot, currently only support 'V'
+     */
     public RobotMQTT(int robotId, RobotMqttClient mqtt, char reality) {
         this.robotId = robotId;
         this.robotMqttClient = mqtt;
@@ -29,23 +41,43 @@ public class RobotMQTT {
         subscribe(mqttTopic.ROBOT_MSG_BROADCAST, "robot/msg/broadcast");
     }
 
+    /**
+     * Create robot instance on the simulator
+     * 
+     * @param robotId
+     * @param x       coordinate as double
+     * @param y       coordinate as double
+     * @param heading direction in degrees, as double
+     */
     public void robotCreate(double x, double y, double heading) {
         JSONObject msg = new JSONObject();
         msg.put("id", robotId);
         msg.put("x", x);
         msg.put("y", y);
         msg.put("heading", heading);
-        msg.put("reality", "V");
+        msg.put("reality", this.reality);
 
         String jsonString = msg.toJSONString();
         robotMqttClient.publish("robot/create", jsonString);
     }
 
+    /**
+     * subscribe to a MQTT topic
+     * 
+     * @param key   Subscription topic key
+     * @param topic Subscription topic value
+     */
     private void subscribe(mqttTopic key, String topic) {
         topicsSub.put(key, topic); // Put to the queue
         robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
+    /**
+     * Handle localization related MQTT subscriptions
+     * 
+     * @param robot   Robot object
+     * @param message Subscription topic value
+     */
     public void handleSubscription(Robot r, MqttMsg m) {
         String topic = m.topic, msg = m.message;
 
