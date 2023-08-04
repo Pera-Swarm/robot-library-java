@@ -21,8 +21,8 @@ public class SimpleCommunication extends Communication {
     }
 
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic); // Put to the queue
-        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
+        topicsSub.put(key, topic);
+        robotMqttClient.subscribe(topic);
     }
 
     public void sendMessage(String msg) {

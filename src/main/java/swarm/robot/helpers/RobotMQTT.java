@@ -29,7 +29,7 @@ public class RobotMQTT {
      * RobotMQTT class
      * 
      * @param robotId
-     * @param mqtt    mqtt object
+     * @param mqtt    MQTT object
      * @param reality reality of the robot, currently only support 'V'
      */
     public RobotMQTT(int robotId, RobotMqttClient mqtt, char reality) {
@@ -45,9 +45,9 @@ public class RobotMQTT {
      * Create robot instance on the simulator
      * 
      * @param robotId
-     * @param x       coordinate as double
-     * @param y       coordinate as double
-     * @param heading direction in degrees, as double
+     * @param x       X coordinate as double
+     * @param y       Y coordinate as double
+     * @param heading Heading direction in degrees, as double
      */
     public void robotCreate(double x, double y, double heading) {
         JSONObject msg = new JSONObject();
@@ -62,14 +62,14 @@ public class RobotMQTT {
     }
 
     /**
-     * subscribe to a MQTT topic
+     * Subscribe to a MQTT topic
      * 
      * @param key   Subscription topic key
      * @param topic Subscription topic value
      */
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic); // Put to the queue
-        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
+        topicsSub.put(key, topic);
+        robotMqttClient.subscribe(topic);
     }
 
     /**
@@ -78,7 +78,7 @@ public class RobotMQTT {
      * @param robot   Robot object
      * @param message Subscription topic value
      */
-    public void handleSubscription(Robot r, MqttMsg m) {
+    public void handleSubscription(Robot robot, MqttMsg m) {
         String topic = m.topic, msg = m.message;
 
         if (topic.equals(topicsSub.get(mqttTopic.ROBOT_MSG))
@@ -99,18 +99,18 @@ public class RobotMQTT {
                     break;
 
                 case "START":
-                    // execute pattern.start method
-                    r.start();
+                    // Execute START command
+                    robot.start();
                     break;
 
                 case "STOP":
-                    // execute pattern.stop method
-                    r.stop();
+                    // Execute STOP command
+                    robot.stop();
                     break;
 
                 case "RESET":
-                    // execute pattern.reset method
-                    r.reset();
+                    // Execute RESET command
+                    robot.reset();
                     break;
             }
 

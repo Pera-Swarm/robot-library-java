@@ -6,7 +6,7 @@ import swarm.mqtt.MqttMsg;
 import swarm.robot.Robot;
 
 /**
- * Abstract class implementation for Sensors
+ * Abstract Class implementation for Sensors
  * 
  * @author Nuwan Jaliyagoda
  */

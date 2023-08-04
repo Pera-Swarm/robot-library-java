@@ -1,7 +1,7 @@
 package swarm.robot;
 
 /**
- * VirtualRobot implementation for Robot
+ * VirtualRobot implementation of the Robot
  * 
  * @author Nuwan Jaliyagoda
  */
@@ -11,16 +11,16 @@ public class VirtualRobot extends Robot {
      * VirtualRobot class
      * 
      * @param id      robot Id
-     * @param x       coordinate as double
-     * @param y       coordinate as double
-     * @param heading direction in degrees, as double
+     * @param x       X coordinate as double
+     * @param y       Y coordinate as double
+     * @param heading Heading direction in degrees, as double
      */
     public VirtualRobot(int id, double x, double y, double heading) {
         super(id, x, y, heading, 'V');
     }
 
     /**
-     * Handle the event loop of the robot
+     * Handles the event loop of the robot
      */
     @Override
     public void loop() throws Exception {
@@ -28,7 +28,7 @@ public class VirtualRobot extends Robot {
     }
 
     /**
-     * Handle sensorInterrupt triggers of the robot
+     * Handles sensorInterrupt triggers of the robot
      */
     @Override
     public void sensorInterrupt(String sensor, String value) {

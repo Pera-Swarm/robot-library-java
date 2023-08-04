@@ -16,7 +16,7 @@ import swarm.robot.sensors.DistanceSensor;
 import swarm.robot.sensors.ProximitySensor;
 
 /**
- * Abstract class implementation for Robot
+ * Abstract Class implementation for Robot
  * 
  * @author Nuwan Jaliyagoda
  */
@@ -49,10 +49,10 @@ public abstract class Robot implements Runnable, IRobotState {
      * Abstract Robot class
      * 
      * @param id      robot Id
-     * @param x       coordinate as double
-     * @param y       coordinate as double
-     * @param heading direction in degrees, as double
-     * @param reality reality, currently supports only 'V'
+     * @param x       X coordinate as double
+     * @param y       Y coordinate as double
+     * @param heading Heading direction in degrees, as double
+     * @param reality Reality of the robot, currently only support 'V'
      */
     public Robot(int id, double x, double y, double heading, char reality) {
 
@@ -130,7 +130,7 @@ public abstract class Robot implements Runnable, IRobotState {
     /**
      * Handle MQTT subscriptions
      */
-    public void handleSubscribeQueue() throws ParseException {
+    public final void handleSubscribeQueue() throws ParseException {
 
         while (!robotMqttClient.inQueue.isEmpty()) {
             MqttMsg m = robotMqttClient.inQueue.poll();
@@ -203,7 +203,7 @@ public abstract class Robot implements Runnable, IRobotState {
     }
 
     /**
-     * Method which handle START command
+     * Method which handles START command
      */
     @Override
     public void start() {
@@ -212,7 +212,7 @@ public abstract class Robot implements Runnable, IRobotState {
     }
 
     /**
-     * Method which handle STOP command
+     * Method which handles STOP command
      */
     @Override
     public void stop() {
@@ -221,7 +221,7 @@ public abstract class Robot implements Runnable, IRobotState {
     }
 
     /**
-     * Method which handle RESET command
+     * Method which handles RESET command
      */
     @Override
     public void reset() {

@@ -6,7 +6,7 @@ import swarm.mqtt.MqttMsg;
 import swarm.robot.Robot;
 
 /**
- * Abstract class implementation for Indicators
+ * Abstract Class implementation for Indicators
  * 
  * @author Nuwan Jaliyagoda
  */

@@ -4,27 +4,36 @@ import swarm.configs.RobotSettings;
 import swarm.robot.exception.MotionControllerException;
 
 /**
- * The class that calculate the robot motions
+ * The class that calculate the robot motions using mathematical models
  * 
  * @author Nuwan Jaliyagoda
  */
 public class MotionController {
 
     /**
-     * This is the maximum duration allowed to coordinate calculation, smaller
-     * values increase the smoothness of the movement, but more CPU time
+     * This is the maximum duration allowed to coordinate calculation, larger
+     * values increase the smoothness of the movement, but less CPU time
      */
     static final private int maxDuration = 100;
 
+    final int CM_2_MM = 10; // centimeters to milimeters
+    final int SEC_2_MS = 1000; // seconds to miliseconds
+
+    /*
+     * This will add necessary additional delays for the simulation time
+     */
+    final int ADDITIONAL_DELAY = 500;
+
     /* This is to be match with cm/s speed */
-    static final private double speedFactor = 0.1;
+    static final private double SPEED_FACTOR = 0.1;
 
     private final Coordinate c;
 
     /**
      * MotionController class
      * 
-     * @param c Coordinate object
+     * @param coordinate Coordinate object
+     * @see Coordinate
      */
     public MotionController(Coordinate coordinate) {
         this.c = coordinate;
@@ -82,7 +91,7 @@ public class MotionController {
     }
 
     /**
-     * Rotate to a given reltive angle in radians, with a given speed
+     * Rotate to a given relative angle in radians, with a given speed
      * 
      * @param speed  the value for speed, [ROBOT_SPEED_MIN, ROBOT_SPEED_MAX]
      * @param degree the relative degree to be rotate, positive means CW, [-180,
@@ -94,7 +103,7 @@ public class MotionController {
     }
 
     /**
-     * Rotate to a given reltive angle in degrees, with a given speed
+     * Rotate to a given relative angle in degrees, with a given speed
      * 
      * @param speed  the value for speed, [ROBOT_SPEED_MIN, ROBOT_SPEED_MAX]
      * @param degree the relative degree to be rotate, positive means CW, [-180,
@@ -104,14 +113,14 @@ public class MotionController {
     public void rotateDegree(int speed, float degree) {
         try {
             if (degree == 0 || degree < -180 || degree > 180)
-                throw new MotionControllerException("Degree should in range [-180, 180]");
+                throw new MotionControllerException("Degree should in range [-180, 180], except 0");
 
             if (speed < RobotSettings.ROBOT_SPEED_MIN)
                 throw new MotionControllerException("Speed should be greater than ROBOT_SPEED_MIN");
 
             int sign = (int) (degree / Math.abs(degree));
-            double distance = (2 * Math.PI * RobotSettings.ROBOT_RADIUS * (Math.abs(degree) / 360)) * 10;
-            float duration = (float) (distance / Math.abs(speed)) * 1000;
+            double distance = (2 * Math.PI * RobotSettings.ROBOT_RADIUS * (Math.abs(degree) / 360)) * CM_2_MM;
+            float duration = (float) (distance / Math.abs(speed)) * SEC_2_MS;
             debug("Sign: " + sign + " Distance: " + distance + " Duration: " + duration);
 
             rotate(sign * speed, duration);
@@ -136,21 +145,31 @@ public class MotionController {
      * Move the robot by given speed for a given distance
      * 
      * @param speed    the value for speed, [±ROBOT_SPEED_MIN, ±ROBOT_SPEED_MAX]
-     * @param distance the distance as double
+     * @param distance the distance as double, > 0
      * @throws MotionControllerException
      */
     public void moveDistance(int speed, double distance) {
-        // distance is relative displacement (in cm) from the current position
-        double duration = (distance * 10 / Math.abs(speed)) * 1000; // in ms
-        move(speed, speed, duration);
+        try {
+            if (speed <= RobotSettings.ROBOT_SPEED_MIN)
+                throw new MotionControllerException("Speed should be greater than ROBOT_SPEED_MIN");
+
+            if (distance <= 0)
+                throw new MotionControllerException("Distance should be greater than 0");
+
+            double duration = (distance * CM_2_MM / Math.abs(speed)) * SEC_2_MS;
+            move(speed, speed, duration);
+
+        } catch (MotionControllerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * The core move method
+     * The core move implementation, using Dead Reckoning algorithm
      * 
-     * @param leftSpeed  left motor speed
-     * @param rightSpeed right motor speed
-     * @param duration   the duration, in ms
+     * @param leftSpeed  Left motor speed
+     * @param rightSpeed Right motor speed
+     * @param duration   Duration, in ms
      * @throws MotionControllerException
      */
     public void move(int leftSpeed, int rightSpeed, double duration) {
@@ -162,8 +181,8 @@ public class MotionController {
             debug("Calculate movement using " + steps + " steps, each has " + stepInterval + " intervals", 0);
 
             for (int j = 0; j < steps; j++) {
-                double dL = leftSpeed * speedFactor * (stepInterval / 1000.0);
-                double dR = rightSpeed * speedFactor * (stepInterval / 1000.0);
+                double dL = leftSpeed * SPEED_FACTOR * (stepInterval / 1000.0);
+                double dR = rightSpeed * SPEED_FACTOR * (stepInterval / 1000.0);
                 double d = (dL + dR) / 2.0;
                 double h = c.getHeadingRad();
 
@@ -174,11 +193,11 @@ public class MotionController {
                 c.setCoordinate(x, y, Math.toDegrees(heading));
 
                 cumulativeInterval += stepInterval;
-                if (cumulativeInterval >= 500) {
-                    debug("Adding extra delay of " + cumulativeInterval);
-                    delay(cumulativeInterval - 500);
+                if (cumulativeInterval >= ADDITIONAL_DELAY) {
+                    debug("Adding extra delay of " + ADDITIONAL_DELAY);
+                    delay(ADDITIONAL_DELAY);
                     c.publishCoordinate();
-                    cumulativeInterval -= 500;
+                    cumulativeInterval -= ADDITIONAL_DELAY;
                 }
             }
 
@@ -199,7 +218,7 @@ public class MotionController {
     /**
      * Validate the robot move speed
      * 
-     * @param speed speed, [ROBOT_SPEED_MIN, ROBOT_SPEED_MAX]
+     * @param speed Speed, [ROBOT_SPEED_MIN, ROBOT_SPEED_MAX]
      * @return True if the speed in the allowed range
      */
     private boolean isSpeedInRange(int speed) {
@@ -214,7 +233,7 @@ public class MotionController {
     /**
      * Internal delay method
      * 
-     * @param duration duration in ms
+     * @param duration Duration in ms
      * @throws InterruptedException
      */
     private void delay(int duration) {
@@ -238,7 +257,7 @@ public class MotionController {
     /**
      * Debug support function
      * 
-     * @param msg   Debug Message
+     * @param msg   Debug message
      * @param level Debug level
      * @throws InterruptedException
      */

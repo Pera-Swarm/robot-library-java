@@ -34,9 +34,9 @@ public class Coordinate implements IMqttHandler {
      * Coordinate class
      * 
      * @param robotId
-     * @param x          coordinate as double
-     * @param y          coordinate as double
-     * @param heading    direction in degrees, as double
+     * @param x          X coordinate as double
+     * @param y          Y coordinate as double
+     * @param heading    Heading direction in degrees, as double
      * @param mqttClient mqttClient object
      */
     public Coordinate(int robotId, double x, double y, double heading, RobotMqttClient mqttClient) {
@@ -50,14 +50,14 @@ public class Coordinate implements IMqttHandler {
     }
 
     /**
-     * subscribe to a MQTT topic
+     * Subscribe to a MQTT topic
      * 
      * @param key   Subscription topic key
      * @param topic Subscription topic value
      */
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic); // Put to the queue
-        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
+        topicsSub.put(key, topic);
+        robotMqttClient.subscribe(topic);
     }
 
     /**
@@ -153,8 +153,8 @@ public class Coordinate implements IMqttHandler {
     /**
      * Set robot's current (x,y) coordinate
      * 
-     * @param x coordinate as a double
-     * @param y coordinate as a double
+     * @param x X coordinate as a double
+     * @param y Y coordinate as a double
      */
     public void setCoordinate(double x, double y) {
         setX(x);
@@ -164,9 +164,9 @@ public class Coordinate implements IMqttHandler {
     /**
      * Set robot's current (x,y) coordinate and heading direction
      * 
-     * @param x       coordinate as a double
-     * @param y       coordinate as a double
-     * @param heading in radians, [-PI, PI]
+     * @param x       X coordinate as a double
+     * @param y       Y coordinate as a double
+     * @param heading Heading in radians, [-PI, PI]
      */
     public void setCoordinate(double x, double y, double heading) {
         setCoordinate(x, y);
@@ -182,7 +182,7 @@ public class Coordinate implements IMqttHandler {
     }
 
     /**
-     * Returns robot's current (x,y,heading) values
+     * Returns robot's current (x,y,heading) values as a string
      * 
      * @return String
      */

@@ -41,14 +41,14 @@ public class DistanceSensor extends AbstractSensor {
     }
 
     /**
-     * subscribe to a MQTT topic
+     * Subscribe to a MQTT topic
      * 
      * @param key   Subscription topic key
      * @param topic Subscription topic value
      */
     private void subscribe(mqttTopic key, String topic) {
-        topicsSub.put(key, topic); // Put to the queue
-        robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
+        topicsSub.put(key, topic);
+        robotMqttClient.subscribe(topic);
     }
 
     /**
