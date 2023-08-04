@@ -11,39 +11,61 @@ import swarm.robot.exception.SensorException;
 import swarm.robot.Robot;
 import swarm.robot.types.RGBColorType;
 
+/**
+ * Color Sensors Emulator class
+ * 
+ * @author Nuwan Jaliyagoda
+ */
 public class ColorSensor extends AbstractSensor {
-
-    private final static int MQTT_TIMEOUT = 1000;
 
     private enum mqttTopic {
         COLOR_IN, COLOR_LOOK
     }
+
+    private final static int MQTT_TIMEOUT = 1000;
 
     private HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
     private boolean col_lock = false;
 
     RGBColorType color;
 
-    public ColorSensor(Robot robot, RobotMqttClient m) {
-        super(robot, m);
+    /**
+     * ColorSensor class
+     * 
+     * @param robot      robot object
+     * @param mqttClient mqttClient object
+     */
+    public ColorSensor(Robot robot, RobotMqttClient mqttClient) {
+        super(robot, mqttClient);
 
         color = new RGBColorType(0, 0, 0);
         subscribe(mqttTopic.COLOR_IN, "sensor/color/" + robotId);
         subscribe(mqttTopic.COLOR_LOOK, "sensor/color/" + robotId + "/?");
     }
 
+    /**
+     * subscribe to a MQTT topic
+     * 
+     * @param key   Subscription topic key
+     * @param topic Subscription topic value
+     */
     private void subscribe(mqttTopic key, String topic) {
         topicsSub.put(key, topic); // Put to the queue
         robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
+    /**
+     * Handle colorSensor related MQTT subscriptions
+     * 
+     * @param robot Robot object
+     * @param m     Subscription topic received object
+     */
     @Override
     public void handleSubscription(Robot robot, MqttMsg m) {
         String topic = m.topic, msg = m.message;
 
         if (topic.equals(topicsSub.get(mqttTopic.COLOR_IN))) {
             // sensor/color/{id}
-            // System.out.println("Color Input>" + msg);
 
             color.setColor(msg);
             col_lock = false;
@@ -53,9 +75,14 @@ public class ColorSensor extends AbstractSensor {
         }
     }
 
-    public RGBColorType getColor() throws Exception {
+    /**
+     * Get the emulated color sensor reading from the simulator
+     * 
+     * @return color as RGBColorType
+     * @throws SensorException
+     */
+    public RGBColorType getColor() throws SensorException {
 
-        // Prepare the message
         JSONObject msg = new JSONObject();
         msg.put("id", robotId);
         msg.put("reality", "M"); // inform the requesting reality
@@ -74,7 +101,7 @@ public class ColorSensor extends AbstractSensor {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            // System.out.print(".");
+
             robot.delay(100);
             timeout = (System.currentTimeMillis() - stratTime > MQTT_TIMEOUT);
         }
@@ -85,14 +112,21 @@ public class ColorSensor extends AbstractSensor {
         return color;
     }
 
-    public void sendColor(int r, int g, int b, int ambient) {
-        // Only for test, virtual robots will not invoke this.
-
+    /**
+     * Send the current color information on MQTT requests, Only for test, virtual
+     * robots will not invoke this.
+     * 
+     * @param red     Red intensity, [0,255]
+     * @param green   Green intensity, [0,255]
+     * @param blue    Blue intensity, [0,255]
+     * @param ambient Ambient status, [0,255]
+     */
+    public void sendColor(int red, int green, int blue, int ambient) {
         JSONObject obj = new JSONObject();
         obj.put("id", robotId);
-        obj.put("R", r);
-        obj.put("G", g);
-        obj.put("B", b);
+        obj.put("R", red);
+        obj.put("G", green);
+        obj.put("B", blue);
         obj.put("ambient", ambient);
 
         robotMqttClient.publish("sensor/color/", obj.toJSONString());

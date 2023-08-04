@@ -10,39 +10,59 @@ import swarm.mqtt.MqttMsg;
 import swarm.robot.exception.SensorException;
 import swarm.robot.Robot;
 
+/**
+ * Distance Sensors Emulator class
+ * 
+ * @author Nuwan Jaliyagoda
+ */
 public class DistanceSensor extends AbstractSensor {
 
     private enum mqttTopic {
         DISTANCE_IN, DISTANCE_LOOK
     }
 
+    private final static int MQTT_TIMEOUT = 1000;
+
     private HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
     private boolean dist_lock = false;
     private int dist_value = 0;
 
-    private final static int MQTT_TIMEOUT = 1000;
-
+    /**
+     * DistanceSensor class
+     * 
+     * @param robot      robot object
+     * @param mqttClient mqttClient object
+     */
     public DistanceSensor(Robot robot, RobotMqttClient m) {
         super(robot, m);
         subscribe(mqttTopic.DISTANCE_IN, "sensor/distance/" + robotId);
         subscribe(mqttTopic.DISTANCE_LOOK, "sensor/distance/" + robotId + "/?");
     }
 
+    /**
+     * subscribe to a MQTT topic
+     * 
+     * @param key   Subscription topic key
+     * @param topic Subscription topic value
+     */
     private void subscribe(mqttTopic key, String topic) {
         topicsSub.put(key, topic); // Put to the queue
         robotMqttClient.subscribe(topic); // Subscribe through MqttHandler
     }
 
+    /**
+     * Handle distanceSensor related MQTT subscriptions
+     * 
+     * @param robot Robot object
+     * @param m     Subscription topic received object
+     */
     @Override
     public void handleSubscription(Robot robot, MqttMsg m) {
-        // sensor/distance/
-        String topic = m.topic;
-        String msg = m.message;
+        String topic = m.topic, msg = m.message;
 
         if (topic.equals(topicsSub.get(mqttTopic.DISTANCE_IN))) {
             // sensor/distance/{id}
-            // System.out.println("Input>" + msg);
 
             if (msg.compareTo("Infinity") == 0) {
                 // -1 will be returned as a fail-proof option. Should throw an exception
@@ -57,17 +77,20 @@ public class DistanceSensor extends AbstractSensor {
         }
     }
 
+    /**
+     * Get the emulated distance sensor reading from the simulator
+     * 
+     * @return distance as double
+     * @throws SensorException
+     */
     public double getDistance() throws Exception {
-        // Prepare the message
+
         JSONObject msg = new JSONObject();
         msg.put("id", robotId);
         msg.put("reality", "M"); // inform the requesting reality
 
-        // Start measuring the time
-        long begin = System.currentTimeMillis();
-        // ---------------------------
-
         dist_lock = true; // Acquire the distance sensor lock
+
         robotMqttClient.publish("sensor/distance", msg.toJSONString());
         robot.delay(250);
 
@@ -80,7 +103,7 @@ public class DistanceSensor extends AbstractSensor {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            // System.out.print(".");
+
             robot.delay(100);
             timeout = (System.currentTimeMillis() - startTime > MQTT_TIMEOUT);
         }
@@ -88,26 +111,21 @@ public class DistanceSensor extends AbstractSensor {
         if (timeout) {
             throw new SensorException("Distance sensor timeout");
         }
-        // System.out.println(" Distance: " + dist_value);
-
-        // Stop measuring the time, and publish to log channel
-        long end = System.currentTimeMillis();
-
-        JSONObject logMsg = new JSONObject();
-        logMsg.put("id", robotId);
-        logMsg.put("msg", (end - begin));
-        robotMqttClient.publish("robot/log", logMsg.toJSONString());
-        // ---------------------------
 
         return dist_value;
     }
 
-    public void sendDistance(double d) {
-        // Only for test, virtual robots will not invoke this.
+    /**
+     * Send the current distance information on MQTT requests, Only for test,
+     * virtual robots will not invoke this.
+     * 
+     * @param dist distanceReading
+     */
+    public void sendDistance(double dist) {
 
         JSONObject obj = new JSONObject();
         obj.put("id", robotId);
-        obj.put("dist", d);
+        obj.put("dist", dist);
 
         robotMqttClient.publish("sensor/distance/", obj.toJSONString());
     }

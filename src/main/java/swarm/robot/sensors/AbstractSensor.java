@@ -5,20 +5,37 @@ import swarm.mqtt.RobotMqttClient;
 import swarm.mqtt.MqttMsg;
 import swarm.robot.Robot;
 
+/**
+ * Abstract class implementation for Sensors
+ * 
+ * @author Nuwan Jaliyagoda
+ */
 public abstract class AbstractSensor implements IMqttHandler {
 
     protected RobotMqttClient robotMqttClient;
     protected int robotId;
     protected Robot robot;
 
-    public AbstractSensor(Robot robot, RobotMqttClient m) {
-        this.robotMqttClient = m;
+    /**
+     * AbstractSensor class
+     * 
+     * @param robot      robot object
+     * @param mqttClient mqttClient object
+     */
+    public AbstractSensor(Robot robot, RobotMqttClient mqttClient) {
+        this.robotMqttClient = mqttClient;
         this.robotId = robot.getId();
         this.robot = robot;
     }
 
+    /**
+     * Handle colorSensor related MQTT subscriptions
+     * 
+     * @param robot Robot object
+     * @param m     Subscription topic received object
+     */
     public void handleSubscription(Robot r, MqttMsg m) {
-        // This will handle incoming messages with already subscribed topics
+
     }
 
 }
