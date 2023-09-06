@@ -34,7 +34,7 @@ public class App extends Thread {
             reader.close();
 
             // Start a single robot
-            Robot robot = new MyTestRobot(10, 0, 0, 90);
+            Robot robot = new MyTestRobot(10, -9, -27, 90);
             new Thread(robot).start();
 
             // // Start a swarm of robots

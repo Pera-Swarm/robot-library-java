@@ -5,6 +5,7 @@ import swarm.mqtt.RobotMqttClient;
 
 import java.util.HashMap;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import swarm.mqtt.MqttMsg;
 import swarm.robot.Robot;
@@ -23,12 +24,13 @@ public class ProximitySensor extends AbstractSensor {
         PROXIMITY_IN
     }
 
-    private final static int MQTT_TIMEOUT = 1000;
+    private final static int MQTT_TIMEOUT = 2000;
 
     private HashMap<mqttTopic, String> topicsSub = new HashMap<mqttTopic, String>();
 
     private boolean proximity_lock = false;
     private ProximityReadingType proximity;
+    private int angles[];
 
     /**
      * ProximitySensor class
@@ -36,8 +38,9 @@ public class ProximitySensor extends AbstractSensor {
      * @param robot      robot object
      * @param mqttClient mqttClient object
      */
-    public ProximitySensor(Robot robot, RobotMqttClient m) {
+    public ProximitySensor(Robot robot, int angles[], RobotMqttClient m) {
         super(robot, m);
+        this.angles = angles;
         subscribe(mqttTopic.PROXIMITY_IN, "sensor/proximity/" + robotId);
     }
 
@@ -66,7 +69,7 @@ public class ProximitySensor extends AbstractSensor {
             // sensor/proximity/{id}
 
             try {
-                proximity = new ProximityReadingType(msg);
+                proximity = new ProximityReadingType(angles, msg);
             } catch (ProximityException e) {
                 e.printStackTrace();
             }
@@ -86,8 +89,15 @@ public class ProximitySensor extends AbstractSensor {
     public ProximityReadingType getProximity() throws Exception {
 
         JSONObject msg = new JSONObject();
+        JSONArray angleArray = new JSONArray();
+
+        for (int i = 0; i < angles.length; i++) {
+            angleArray.add(angles[i]);
+        }
+
         msg.put("id", robotId);
-        msg.put("reality", "M"); // inform the requesting reality
+        msg.put("angles", angleArray);
+        msg.put("reality", "V"); // inform the requesting reality
 
         proximity_lock = true; // Acquire the proximity sensor lock
 
@@ -109,7 +119,7 @@ public class ProximitySensor extends AbstractSensor {
         }
 
         if (timeout) {
-            throw new SensorException("Distance sensor timeout");
+            throw new SensorException("Proximity sensor timeout");
         }
 
         return proximity;
