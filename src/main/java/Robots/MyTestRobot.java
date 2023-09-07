@@ -11,7 +11,6 @@ public class MyTestRobot extends VirtualRobot {
     public void setup() {
         System.out.println("My Test Robot Started");
         super.setup();
-        state = robotState.RUN;
     }
 
     public void loop() throws Exception {
@@ -20,7 +19,6 @@ public class MyTestRobot extends VirtualRobot {
         if (state == robotState.RUN) {
             System.out.println("Test");
             delay(1000);
-            proximitySensor.getProximity();
         }
     }
 
