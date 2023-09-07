@@ -91,9 +91,8 @@ public class ProximitySensor extends AbstractSensor {
         JSONObject msg = new JSONObject();
         JSONArray angleArray = new JSONArray();
 
-        for (int i = 0; i < angles.length; i++) {
+        for (int i = 0; i < angles.length; i++)
             angleArray.add(angles[i]);
-        }
 
         msg.put("id", robotId);
         msg.put("angles", angleArray);
@@ -102,7 +101,7 @@ public class ProximitySensor extends AbstractSensor {
         proximity_lock = true; // Acquire the proximity sensor lock
 
         robotMqttClient.publish("sensor/proximity", msg.toJSONString());
-        robot.delay(250);
+        robot.delay(250 * angles.length);
 
         long startTime = System.currentTimeMillis();
         boolean timeout = false;
@@ -117,6 +116,7 @@ public class ProximitySensor extends AbstractSensor {
             robot.delay(100);
             timeout = (System.currentTimeMillis() - startTime > MQTT_TIMEOUT);
         }
+        System.out.println();
 
         if (timeout) {
             throw new SensorException("Proximity sensor timeout");

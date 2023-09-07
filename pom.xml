@@ -7,7 +7,7 @@
 
     <groupId>pera.swarm</groupId>
     <artifactId>java-robot</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <name>Pera-Swarm Java Node</name>
     <url>https://github.com/Pera-Swarm/robot-library-java</url>
