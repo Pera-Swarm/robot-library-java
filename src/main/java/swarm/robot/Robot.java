@@ -45,8 +45,6 @@ public abstract class Robot implements Runnable, IRobotState {
     protected char reality;
     protected robotState state = robotState.WAIT;
 
-    private int[] proximityAngles = { -90, 0, 90 };
-
     /**
      * Abstract Robot class
      * 
@@ -80,7 +78,7 @@ public abstract class Robot implements Runnable, IRobotState {
     public void setup() {
         // Setup each module
         distSensor = new DistanceSensor(this, robotMqttClient);
-        proximitySensor = new ProximitySensor(this, proximityAngles, robotMqttClient);
+        proximitySensor = new ProximitySensor(this, robotMqttClient);
         colorSensor = new ColorSensor(this, robotMqttClient);
 
         neoPixel = new NeoPixel(this, robotMqttClient);

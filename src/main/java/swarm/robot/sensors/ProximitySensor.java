@@ -30,12 +30,24 @@ public class ProximitySensor extends AbstractSensor {
 
     private boolean proximity_lock = false;
     private ProximityReadingType proximity;
-    private int angles[];
+    private int[] angles = { 0 };
 
     /**
      * ProximitySensor class
      * 
      * @param robot      robot object
+     * @param mqttClient mqttClient object
+     */
+    public ProximitySensor(Robot robot, RobotMqttClient m) {
+        super(robot, m);
+        subscribe(mqttTopic.PROXIMITY_IN, "sensor/proximity/" + robotId);
+    }
+
+    /**
+     * ProximitySensor class
+     * 
+     * @param robot      robot object
+     * @param angles[]   proximity sensor angles as int array
      * @param mqttClient mqttClient object
      */
     public ProximitySensor(Robot robot, int angles[], RobotMqttClient m) {
@@ -81,6 +93,15 @@ public class ProximitySensor extends AbstractSensor {
     }
 
     /**
+     * Set the proximity sensor angles
+     * 
+     * @param proximityAngles angles as an int array
+     */
+    public void setAngles(int[] proximityAngles) {
+        this.angles = proximityAngles;
+    }
+
+    /**
      * Get the emulated proximity sensor reading from the simulator
      * 
      * @return distance as double
@@ -112,11 +133,10 @@ public class ProximitySensor extends AbstractSensor {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            System.out.print(".");
+
             robot.delay(100);
             timeout = (System.currentTimeMillis() - startTime > MQTT_TIMEOUT);
         }
-        System.out.println();
 
         if (timeout) {
             throw new SensorException("Proximity sensor timeout");

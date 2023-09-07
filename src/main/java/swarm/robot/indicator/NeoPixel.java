@@ -32,7 +32,6 @@ public class NeoPixel extends AbstractIndicator {
      */
     public NeoPixel(Robot robot, RobotMqttClient mqttClient) {
         super(robot, mqttClient);
-
     }
 
     /**
