@@ -13,6 +13,7 @@ import swarm.robot.helpers.RobotMQTT;
 import swarm.robot.indicator.NeoPixel;
 import swarm.robot.sensors.ColorSensor;
 import swarm.robot.sensors.DistanceSensor;
+import swarm.robot.sensors.CompassSensor;
 import swarm.robot.sensors.ProximitySensor;
 
 /**
@@ -26,6 +27,7 @@ public abstract class Robot implements Runnable, IRobotState {
     public DistanceSensor distSensor;
     public ProximitySensor proximitySensor;
     public ColorSensor colorSensor;
+    public CompassSensor compassSensor;
 
     // Communication -----------------------------------------------------
     public SimpleCommunication simpleComm;
@@ -80,6 +82,7 @@ public abstract class Robot implements Runnable, IRobotState {
         distSensor = new DistanceSensor(this, robotMqttClient);
         proximitySensor = new ProximitySensor(this, robotMqttClient);
         colorSensor = new ColorSensor(this, robotMqttClient);
+        compassSensor = new CompassSensor(this, robotMqttClient);
 
         neoPixel = new NeoPixel(this, robotMqttClient);
 
@@ -155,6 +158,9 @@ public abstract class Robot implements Runnable, IRobotState {
                         } else if (m.topicGroups[1].equals("proximity")) {
                             // System.out.println("proximity sensor message received");
                             proximitySensor.handleSubscription(this, m);
+                        } else if (m.topicGroups[1].equals("compass")) {
+                             System.out.println("compass sensor message received");
+                            compassSensor.handleSubscription(this, m);
                         }
 
                         break;

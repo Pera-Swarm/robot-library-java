@@ -17,7 +17,7 @@ public class MyTestRobot extends VirtualRobot {
         super.loop();
 
         if (state == robotState.RUN) {
-            System.out.println("Test");
+            System.out.println("\t\t Compass reading: " + compassSensor.readCompass());
             delay(1000);
         }
     }
