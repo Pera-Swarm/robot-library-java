@@ -13,6 +13,8 @@ public class ObstacleAvoidRobot extends VirtualRobot {
     // The default movement speed
     private int defaultMoveSpeed = 100;
 
+//    private int[] restrictedAngles = {90, 180};
+
     public ObstacleAvoidRobot(int id, double x, double y, double heading) {
         super(id, x, y, heading);
     }
@@ -34,6 +36,7 @@ public class ObstacleAvoidRobot extends VirtualRobot {
                 // number
                 int random = -1000 + ((int) ((Math.random() * 2000)));
                 int sign = (random % 2 == 0) ? 1 : -1;
+//                int angle = restrictedAngles[random % restrictedAngles.length];
 
                 System.out.println("\t Wall detected, go back and rotate " + ((sign > 0) ? "CW" : "CCW"));
 
@@ -43,14 +46,15 @@ public class ObstacleAvoidRobot extends VirtualRobot {
                 // rotate
                 int loopCount = 0;
                 while (distSensor.getDistance() < distanceThreshold && loopCount < 5) {
-                    // Maximum 5 tries to rotate and find a obstale free path
+                    // Maximum 5 tries to rotate and find a obstacle free path
                     motion.rotate((int) (defaultMoveSpeed * 0.75 * sign), 1000);
+//                    motion.rotateDegree((int) (defaultMoveSpeed * 0.75 * sign), angle);
                     loopCount++;
                 }
 
                 // rotate a little more
                 motion.rotate((int) (defaultMoveSpeed * 0.75 * sign), 500);
-
+//                motion.rotateDegree((int) (defaultMoveSpeed * 0.75 * sign), angle);
 
                 System.out.println("\t\t Compass reading: " + compassSensor.readCompass());
 

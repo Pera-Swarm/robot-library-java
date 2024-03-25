@@ -35,7 +35,7 @@ public class App extends Thread {
 
             // Start a single robot
 //            Robot robot = new MyTestRobot(4, 18, 6, 180);
-            Robot robot = new ObstacleAvoidRobot(4, 18, 6, 180);
+            Robot robot = new ObstacleAvoidRobot(10, 45, -45, 180);
             new Thread(robot).start();
 
             // // Start a swarm of robots

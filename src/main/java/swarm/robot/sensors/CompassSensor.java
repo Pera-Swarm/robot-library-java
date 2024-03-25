@@ -21,7 +21,11 @@ public class CompassSensor extends AbstractSensor {
     }
 
     private HashMap<CompassSensor.mqttTopic, String> topicsSub = new HashMap<>();
-    private double heading;
+    private double reading;
+
+//    private static final double TOLERANCE = 0.000001;  // Value should be closer to zero
+
+    private static final double NORTH = 90.0;  // Should measure relative to a reference (here, to the horizontal)
 
     public CompassSensor(Robot robot, RobotMqttClient mqttClient) {
         super(robot, mqttClient);
@@ -65,7 +69,10 @@ public class CompassSensor extends AbstractSensor {
     public double readCompass() {
         try {
             if (robot instanceof VirtualRobot) {
-                heading = robot.coordinates.getHeading();
+
+                double robotHead = robot.coordinates.getHeading();
+                reading = convertToNorth(robotHead);
+
             } else {
                 robot.handleSubscribeQueue();
             }
@@ -73,7 +80,7 @@ public class CompassSensor extends AbstractSensor {
             e.printStackTrace();
         }
 
-        return heading;
+        return reading;
     }
 
     /**
@@ -90,4 +97,12 @@ public class CompassSensor extends AbstractSensor {
         robotMqttClient.publish("sensor/compass/", obj.toJSONString());
     }
 
+    private double convertToNorth(double measuredValue) {
+        double bearing = NORTH - measuredValue;
+
+        // Normalize the result to ensure it's within [0, 360)
+        bearing = (bearing + 360) % 360;
+
+        return bearing;
+    }
 }
